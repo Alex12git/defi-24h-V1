@@ -43,11 +43,8 @@ export default function App() {
     if (window.confirm("🚨 Attention, cela va remettre tous les compteurs à 0 pour tous les joueurs. Confirmer ?")) {
       try {
         if (db) {
-          // On convertit le tableau initialChallenges en objet pour correspondre à ton format Firebase actuel
-          const resetData = Object.assign({}, initialChallenges);
-          
-          // On cible précisément la collection "tracker" et le document "defis"
-          await setDoc(doc(db, "tracker", "defis"), resetData);
+          // On envoie initialChallenges exactement avec la même structure que la ligne 69 de ton code
+          await setDoc(doc(db, "tracker", "defis"), { challenges: initialChallenges });
         }
         alert("✅ Tous les défis ont été remis à zéro !");
       } catch (error) {
