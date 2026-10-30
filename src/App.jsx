@@ -83,28 +83,29 @@ export default function App() {
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date();
-      // Définit le début sur le prochain minuit (31 octobre 00:00 par exemple)
       const startTime = new Date('2026-10-31T00:00:00');
-      
       const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
 
       if (now < startTime) {
-      const diff = startTime - now;
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
-      const m = Math.floor((diff / 1000 / 60) % 60).toString().padStart(2, '0');
-      const s = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
-      setTimeLeft({ status: 'waiting', string: `Démarre dans ${h}:${m}:${s}` });
-    }
+        // Compte à rebours avant minuit
+        const diff = startTime - now;
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
+        const m = Math.floor((diff / 1000 / 60) % 60).toString().padStart(2, '0');
+        const s = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
+        setTimeLeft({ status: 'waiting', string: `Démarre dans ${h}:${m}:${s}` });
       } else if (now >= startTime && now < endTime) {
+        // Décompte des 24h pendant l'événement
         const diff = endTime - now;
         const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
         const m = Math.floor((diff / 1000 / 60) % 60).toString().padStart(2, '0');
         const s = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
         setTimeLeft({ status: 'running', string: `Temps restant : ${h}h ${m}m ${s}s` });
       } else {
+        // Fin des 24h
         setTimeLeft({ status: 'finished', string: 'TERMINE' });
       }
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
