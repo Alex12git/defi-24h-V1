@@ -66,8 +66,7 @@ export default function App() {
     const timer = setInterval(() => {
       const now = new Date();
       // Définit le début sur le prochain minuit (31 octobre 00:00 par exemple)
-      const startTime = new Date();
-      startTime.setHours(24, 0, 0, 0); 
+      const startTime = new Date('2026-10-31T00:00:00');
       
       const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
 
