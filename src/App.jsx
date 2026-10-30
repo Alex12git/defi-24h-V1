@@ -39,14 +39,21 @@ export default function App() {
   const [challenges, setChallenges] = useState(initialChallenges);
   const [timeLeft, setTimeLeft] = useState({ status: 'waiting', string: '00:00:00' });
   const [isConnected, setIsConnected] = useState(false);
-  const handleReset = () => {
+  const handleReset = async () => {
     if (window.confirm("🚨 Attention, cela va remettre tous les compteurs à 0 pour tous les joueurs. Confirmer ?")) {
-      initialChallenges.forEach(defi => {
-        if (db) {
-          // Remplace "challenges" par le nom exact de ta collection Firebase si différent
-          setDoc(doc(db, "challenges", defi.id.toString()), defi);
-        }
-      });
+      try {
+        // IMPORTANT : Vérifie que le mot "challenges" est bien le même que 
+        // celui que tu utilises pour lire les données (onSnapshot)
+        initialChallenges.forEach(async (defi) => {
+          if (db) {
+            await setDoc(doc(db, "challenges", defi.id.toString()), defi);
+          }
+        });
+        alert("✅ Tous les défis ont été remis à zéro !");
+      } catch (error) {
+        console.error("Erreur :", error);
+        alert("❌ Une erreur est survenue lors du reset.");
+      }
     }
   };
 
@@ -82,7 +89,12 @@ export default function App() {
       const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
 
       if (now < startTime) {
-        setTimeLeft({ status: 'waiting', string: 'Démarre ce soir à 00h00' });
+      const diff = startTime - now;
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
+      const m = Math.floor((diff / 1000 / 60) % 60).toString().padStart(2, '0');
+      const s = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
+      setTimeLeft({ status: 'waiting', string: `Démarre dans ${h}:${m}:${s}` });
+    }
       } else if (now >= startTime && now < endTime) {
         const diff = endTime - now;
         const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
