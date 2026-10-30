@@ -39,6 +39,16 @@ export default function App() {
   const [challenges, setChallenges] = useState(initialChallenges);
   const [timeLeft, setTimeLeft] = useState({ status: 'waiting', string: '00:00:00' });
   const [isConnected, setIsConnected] = useState(false);
+  const handleReset = () => {
+    if (window.confirm("🚨 Attention, cela va remettre tous les compteurs à 0 pour tous les joueurs. Confirmer ?")) {
+      initialChallenges.forEach(defi => {
+        if (db) {
+          // Remplace "challenges" par le nom exact de ta collection Firebase si différent
+          setDoc(doc(db, "challenges", defi.id.toString()), defi);
+        }
+      });
+    }
+  };
 
   // Synchronisation Firebase
   useEffect(() => {
@@ -151,6 +161,12 @@ export default function App() {
       <header className="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-gray-800 p-4">
         <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-2">
           <h1 className="text-xl font-bold tracking-wider text-gray-400 uppercase">Les 24H de l'Enfer</h1>
+          <button 
+  onClick={handleReset} 
+  className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+>
+  Remettre les défis à zéro
+</button>
           <div className="flex items-center gap-3 bg-gray-900 border border-gray-700 px-6 py-3 rounded-2xl shadow-xl">
             <Clock className={`w-6 h-6 ${timeLeft.status === 'running' ? 'text-blue-500 animate-pulse' : 'text-gray-500'}`} />
             <span className="text-3xl font-black font-mono tracking-widest">{timeLeft.string}</span>
