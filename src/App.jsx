@@ -6,12 +6,13 @@ import { getFirestore, doc, onSnapshot, setDoc } from 'firebase/firestore';
 // --- CONFIGURATION FIREBASE ---
 // Remplace ces valeurs vides par celles de ton projet Firebase plus tard
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyCInJnxxOv-tCLZ0iLQ1YRsmRYdFRIeFOY",
+  authDomain: "defis-24h-v1.firebaseapp.com",
+  projectId: "defis-24h-v1",
+  storageBucket: "defis-24h-v1.firebasestorage.app",
+  messagingSenderId: "724874215588",
+  appId: "1:724874215588:web:9c26137311f8aeaa3ca631",
+  measurementId: "G-4T88X6SVTJ"
 };
 
 // Initialisation conditionnelle (évite de crasher si les clés sont vides pour le test visuel)
